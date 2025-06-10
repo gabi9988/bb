@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surpresa de Dia dos Namorados 💖</title>
+  <style>
+    body {
+      background-color: #fff0f5;
+      font-family: 'Comic Sans MS', 'Arial', sans-serif;
+      text-align: center;
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .center-screen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .start-btn {
+      padding: 20px 40px;
+      background-color: #ff4d88;
+      color: white;
+      border: none;
+      font-size: 1.5em;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .start-btn:hover {
+      background-color: #e63c76;
+    }
+    .mensagem, .contador, .pedido {
+      font-size: 2em;
+      color: #ff4d88;
+      transition: opacity 1.2s ease;
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .mensagem.show, .contador.show, .pedido.show {
+      opacity: 1;
+    }
+    .pedido img {
+      max-width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      margin-top: 20px;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff4d88;
+      transform: rotate(45deg);
+      animation: floatUp 10s linear infinite;
+      opacity: 0.7;
+    }
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff4d88;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.7; }
+      100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tela inicial com botão -->
+  <div id="startScreen" class="center-screen">
+    <button class="start-btn" onclick="iniciar()">💖 Clique aqui para começar 💖</button>
+  </div>
+
+  <!-- Conteúdo oculto inicialmente -->
+  <div id="msg1" class="mensagem">💘 Feliz Dia dos Namorados! 💘</div>
+  <div id="msg2" class="mensagem">🤔 Ué, mas a gente namora?</div>
+  <div id="msg3" class="mensagem">😳 Hmmm, me diz você então...</div>
+  <div id="contador" class="contador"></div>
+  <div id="pedido" class="pedido">
+    <h1>Quer namorar comigo? 🥺👉👈</h1>
+    <img src="https://i.pinimg.com/originals/26/3a/f7/263af75c35ff6ec2b1c76de1f2182f52.jpg" alt="Meme engraçado de pedido" />
+  </div>
+
+  <!-- Música local -->
+  <audio id="musica" src="musica.mp3" autoplay loop></audio>
+
+  <!-- Corações animados -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (8 + Math.random() * 5) + 's';
+      heart.style.width = heart.style.height = (10 + Math.random() * 20) + 'px';
+      document.body.appendChild(heart);
+    }
+  </script>
+
+  <!-- Lógica de sequência -->
+  <script>
+    const msg1 = document.getElementById('msg1');
+    const msg2 = document.getElementById('msg2');
+    const msg3 = document.getElementById('msg3');
+    const contador = document.getElementById('contador');
+    const pedido = document.getElementById('pedido');
+    const musica = document.getElementById('musica');
+    const startScreen = document.getElementById('startScreen');
+
+    function iniciar() {
+      startScreen.style.display = 'none';
+      musica.play().catch(() => {});
+
+      setTimeout(() => { msg1.classList.add('show'); }, 1000);
+      setTimeout(() => { msg1.classList.remove('show'); msg2.classList.add('show'); }, 5000);
+      setTimeout(() => { msg2.classList.remove('show'); msg3.classList.add('show'); }, 9500);
+      setTimeout(() => { msg3.classList.remove('show'); startCountdown(2); }, 11500);
+    }
+
+    function startCountdown(seconds) {
+      contador.classList.add('show');
+      let current = seconds;
+      contador.innerText = current;
+
+      const interval = setInterval(() => {
+        current--;
+        if (current > 0) {
+          contador.innerText = current;
+        } else {
+          clearInterval(interval);
+          contador.classList.remove('show');
+          pedido.classList.add('show');
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
